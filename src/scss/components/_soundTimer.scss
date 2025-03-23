@@ -1,0 +1,45 @@
+.volume__box {
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .icc {
+    position: absolute;
+    top: -35px;
+    right: 20px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 25px;
+  }
+}
+
+.volume {
+  background-color: white;
+  padding: 10px 20px;
+  &__text {
+    text-align: center;
+    font-size: 13px;
+  }
+  &__icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    .icon-volume {
+      font-size: 26px;
+      padding: 5px;
+      background-color: rgba(128, 128, 128, 0.213);
+      cursor: pointer;
+      border-radius: 2px;
+      &.active {
+        background-color: rgba(128, 128, 128, 0.97);
+        border: 1px solid rgb(42, 42, 42);
+        color: white;
+      }
+    }
+  }
+}

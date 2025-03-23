@@ -1,0 +1,24 @@
+@use "../abstracts/responsive" as resize;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.container {
+  max-width: 620px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+h1 {
+  background-color: var(--main-pomdoro);
+  color: white;
+}
+
+@include resize.breakpoint("xs") {
+  .container {
+    padding: 0 10px;
+    max-width: 550px;
+  }
+}
