@@ -6,7 +6,6 @@ import { Option, Plus } from "../../../public";
 import NotesCard from "../cards/notesCard";
 import TaskModal from "../modals/taskModal";
 import { TaskObject } from "@/interface";
-import EditModal from "../modals/editModal";
 import { toast } from "sonner";
 import MenuOption from "./menuOption";
 
@@ -19,7 +18,6 @@ const Notes = ({
 }) => {
   //------- states
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [editData, setEditData] = useState<TaskObject>();
   const [prevCount, setPrevCount] = useState(tasks.length);
   const [isOpenMore, setIsOpenMore] = useState<boolean>(false);
@@ -114,21 +112,12 @@ const Notes = ({
         </div>
       </div>
       <div className="notes__cardwrapper">
-        {isEditOpen ? (
-          <EditModal
-            setIsEditOpen={setIsEditOpen}
-            setTasks={setTasks}
-            tasks={tasks}
-            editData={editData}
-          />
-        ) : (
-          <NotesCard
-            setTasks={setTasks}
-            setIsEditOpen={setIsEditOpen}
-            tasks={tasks}
-            findEditData={(id: string) => findEditData(id)}
-          />
-        )}
+        <NotesCard
+          tasks={tasks}
+          editData={editData}
+          setTasks={setTasks}
+          findEditData={(id: string) => findEditData(id)}
+        />
       </div>
       {isModalOpen ? (
         <TaskModal

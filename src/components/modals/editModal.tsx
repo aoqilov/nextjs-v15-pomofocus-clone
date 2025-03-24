@@ -10,13 +10,13 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 const EditModal = ({
   editData,
   tasks,
-  setIsEditOpen,
+  setOpenAcordion,
   setTasks,
 }: {
   editData: TaskObject;
   tasks: TaskObject[];
   setTasks: Dispatch<SetStateAction<TaskObject[]>>;
-  setIsEditOpen: Dispatch<SetStateAction<boolean>>;
+  setOpenAcordion: Dispatch<SetStateAction<string | null>>;
 }) => {
   const [title, setTitle] = useState<string>(editData?.title);
   const [estnumber, setEstnumber] = useState<number>(editData?.estnumber);
@@ -34,7 +34,7 @@ const EditModal = ({
         : task
     );
     setTasks(updatedTasks);
-    setIsEditOpen(false);
+    setOpenAcordion(null);
     // Reset inputs
     setTitle("");
     setEstnumber(1);
@@ -43,7 +43,7 @@ const EditModal = ({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setIsEditOpen(false);
+        setOpenAcordion(null);
       }
     };
     // /////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ const EditModal = ({
         modalRef.current &&
         !modalRef.current.contains(event.target as Node)
       ) {
-        setIsEditOpen(false);
+        setOpenAcordion(null);
       }
     }
 
@@ -71,7 +71,7 @@ const EditModal = ({
   function deleteData(id: string): void {
     const updatedTasks = tasks.filter((i) => i.id !== id);
     setTasks(updatedTasks);
-    setIsEditOpen(false);
+    setOpenAcordion(null);
   }
 
   return (
@@ -118,7 +118,7 @@ const EditModal = ({
           Delete
         </button>
         <div className="footer-btns">
-          <button onClick={() => setIsEditOpen(false)} className="cancel">
+          <button onClick={() => setOpenAcordion(null)} className="cancel">
             Cancel
           </button>
           <button onClick={saveCreate} className="save">

@@ -1,17 +1,33 @@
-.loading {
-  width: 100vw;
-  height: 100vh;
-  background-color: #ba4949;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  &-icon {
-    width: 150px;
-    height: 150px;
+@keyframes moveRotate {
+  0% {
+    transform: translateX(0);
   }
+  50% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(-40px);
+  }
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #a1433d; // Asl fondagi rangga moslang
+
+  .loading-icon {
+    width: 80px;
+    height: 80px;
+    animation: moveRotate 1.5s infinite ease-in-out;
+  }
+
   h3 {
+    margin-top: 10px;
+    font-size: 24px;
+    font-weight: bold;
     color: white;
-    font-size: 50px;
   }
 }
