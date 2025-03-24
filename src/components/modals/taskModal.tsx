@@ -6,8 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 import { TaskObject } from "@/interface";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
-// Define the structure of a task
-
 const TaskModal = ({
   setIsModalOpen,
   setTasks,
@@ -19,11 +17,12 @@ const TaskModal = ({
   setTasks: Dispatch<SetStateAction<TaskObject[]>>;
   setIsModalOpen: (isOpen: boolean) => void;
 }) => {
+  // --------------------------  states
   const [title, setTitle] = useState<string>("");
   const [estnumber, setEstnumber] = useState<number>(1);
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement | null>(null);
-
+  // -----------------------------  useefects
   useEffect(() => {
     if (isModalOpen && inputRef.current) {
       inputRef.current.focus();
@@ -52,9 +51,9 @@ const TaskModal = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  // -----------------------------  functions
   function saveCreate() {
-    if (title.trim() === "") return; // Prevent empty titles
+    if (title.trim() === "") return;
 
     const newTask: TaskObject = {
       id: uuidv4(),
@@ -65,7 +64,7 @@ const TaskModal = ({
     const updatedTasks = [...tasks, newTask];
 
     setTasks(updatedTasks);
-    // Reset inputs
+
     setTitle("");
     setEstnumber(1);
   }
@@ -76,8 +75,8 @@ const TaskModal = ({
         className="modal"
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            e.preventDefault(); // Prevent default behavior
-            saveCreate(); // Save the task when "Enter" is pressed
+            e.preventDefault();
+            saveCreate();
           }
         }}
       >

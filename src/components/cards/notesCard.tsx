@@ -26,7 +26,6 @@ const NotesCard = ({
     );
     setTasks(updatedTasks);
   }
-  // -----
 
   return (
     <>

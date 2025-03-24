@@ -5,8 +5,6 @@ import { CaretDown, CaretUp } from "../../../public";
 import { TaskObject } from "@/interface";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
-// Define the structure of a task
-
 const EditModal = ({
   editData,
   tasks,
@@ -18,35 +16,18 @@ const EditModal = ({
   setTasks: Dispatch<SetStateAction<TaskObject[]>>;
   setOpenAcordion: Dispatch<SetStateAction<string | null>>;
 }) => {
+  // -----------------------  states
   const [title, setTitle] = useState<string>(editData?.title);
   const [estnumber, setEstnumber] = useState<number>(editData?.estnumber);
   const modalRef = useRef<HTMLDivElement | null>(null);
-  //
-
-  const saveCreate = () => {
-    if (title.trim() === "") return; // Prevent empty titles
-
-    if (!editData) return; // Agar editData mavjud bo'lmasa, hech narsa qilmaydi
-
-    const updatedTasks = tasks.map((task) =>
-      task.id === editData.id
-        ? { ...task, title: title, estnumber: estnumber }
-        : task
-    );
-    setTasks(updatedTasks);
-    setOpenAcordion(null);
-    // Reset inputs
-    setTitle("");
-    setEstnumber(1);
-  };
-  //   ---
+  //   ---------------------  useefects
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setOpenAcordion(null);
       }
     };
-    // /////////////////////////////////////////////////////////////
+    // ---------------------
     function handleClickOutside(event: MouseEvent) {
       if (
         modalRef.current &&
@@ -66,8 +47,22 @@ const EditModal = ({
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   });
+  // -----------------------  functions
+  function saveCreate() {
+    if (title.trim() === "") return;
 
-  // ----
+    if (!editData) return;
+
+    const updatedTasks = tasks.map((task) =>
+      task.id === editData.id
+        ? { ...task, title: title, estnumber: estnumber }
+        : task
+    );
+    setTasks(updatedTasks);
+    setOpenAcordion(null);
+    setTitle("");
+    setEstnumber(1);
+  }
   function deleteData(id: string): void {
     const updatedTasks = tasks.filter((i) => i.id !== id);
     setTasks(updatedTasks);

@@ -13,6 +13,10 @@ const MenuOption = ({
   tasks: TaskObject[];
   setTasks: Dispatch<SetStateAction<TaskObject[]>>;
 }) => {
+  // ---------------------------  states
+  // ---------------------------  useefects
+
+  // ---------------------------  functions
   function allDelete() {
     setTasks([]);
     setIsOpenMore(false);

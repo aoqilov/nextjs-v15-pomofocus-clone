@@ -16,14 +16,14 @@ const Notes = ({
   tasks: TaskObject[];
   setTasks: Dispatch<SetStateAction<TaskObject[]>>;
 }) => {
-  //------- states
+  //--------------------------- states
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editData, setEditData] = useState<TaskObject>();
   const [prevCount, setPrevCount] = useState(tasks.length);
   const [isOpenMore, setIsOpenMore] = useState<boolean>(false);
-  const [finishTime, setFinishTime] = useState<string>("--:--"); // Yangi state
+  const [finishTime, setFinishTime] = useState<string>();
 
-  //------- functions
+  //--------------------------- useefects
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
@@ -43,10 +43,6 @@ const Notes = ({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  function findEditData(id: string): void {
-    setEditData(tasks.find((i) => i.id == id));
-  }
-
   useEffect(() => {
     const remainingTasks = tasks.filter((item) => !item.check).length;
 
@@ -63,18 +59,23 @@ const Notes = ({
 
     setFinishTime(timeFooter()); // Yangilangan vaqtni saqlash
     setPrevCount(remainingTasks);
-  }, [tasks]); // tasks o‘zgarganda ishlaydi
-  const timeFooter = (): string => {
+  }, [tasks]);
+  //--------------------------- functions
+
+  function findEditData(id: string): void {
+    setEditData(tasks.find((i) => i.id == id));
+  }
+
+  function timeFooter(): string {
     const resLocalTime = JSON.parse(localStorage.getItem("times")) ?? {
       pomodoro: 0,
     };
 
     const resEstCount = tasks.reduce((sum, task) => sum + task.estnumber, 0);
 
-    // Agar tasks bo‘sh bo‘lsa, faqat joriy vaqtni qaytarish
     if (resEstCount === 0) {
       const now = new Date();
-      return now.toTimeString().slice(0, 5); // "HH:MM" formatida qaytaradi
+      return now.toTimeString().slice(0, 5);
     }
 
     const totalSeconds = resEstCount * 60 + (resLocalTime.pomodoro || 0);
@@ -86,7 +87,7 @@ const Notes = ({
     const formattedMinutes = now.getMinutes().toString().padStart(2, "0");
 
     return `${formattedHours}:${formattedMinutes}`;
-  };
+  }
 
   return (
     <div className="notes container">

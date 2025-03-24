@@ -9,13 +9,8 @@ import { Toaster } from "sonner";
 import Loading from "@/components/loading/loading";
 
 const Home = () => {
+  // -------------------------------------   states
   const [mounted, setMounted] = useState(false);
-
-  // Component mount bo‘lganda
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const [tasks, setTasks] = useState<TaskObject[]>(() => {
     if (typeof window !== "undefined") {
       const savedTasks = localStorage.getItem("tasks");
@@ -24,7 +19,6 @@ const Home = () => {
     return [];
   });
   const [bgColor, setBgColor] = useState<string>("ba4949");
-
   const [changeTime, setChangeTime] = useState<ChangeTime>(() => {
     if (typeof window !== "undefined") {
       const savedTime = localStorage.getItem("times");
@@ -34,22 +28,27 @@ const Home = () => {
     }
   });
 
-  // changeTime o'zgarganda localStorage'ga yozish
+  // -------------------------------------   useefects
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // -------------------------------------  local SET
   useEffect(() => {
     if (mounted) {
       localStorage.setItem("times", JSON.stringify(changeTime));
       localStorage.setItem("tasks", JSON.stringify(tasks));
     }
   }, [changeTime, mounted, tasks]);
-
+  // -------------------------------------  functions
   function changeBgColor(color: string): void {
     setBgColor(color);
   }
 
-  if (!mounted) return <Loading />; // yoki loader ko'rsatish
+  if (!mounted) return <Loading />;
 
   return (
-    <div>
+    <div className="app">
       <Toaster position="bottom-center" richColors />
       <div className="wrapper__bgcolor" style={{ background: `#${bgColor}` }}>
         <Navbar changeTime={changeTime} setChangeTime={setChangeTime} />

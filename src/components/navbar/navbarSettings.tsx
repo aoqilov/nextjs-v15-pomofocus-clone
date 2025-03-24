@@ -12,23 +12,21 @@ const NavbarSettings = ({
   changeTime: ChangeTime;
   setChangeTime: Dispatch<SetStateAction<ChangeTime>>;
 }) => {
-  // Dastlabki vaqtlarni olish va daqiqaga aylantirish
+  // -----------------------------------   states
   const [updatedTime, setUpdatedTime] = useState<ChangeTime>({
     pomodoro: changeTime.pomodoro / 60,
     short: changeTime.short / 60,
     long: changeTime.long / 60,
   });
-
-  // Input qiymatlari o'zgarganda
+  // ------------------------------------  functions
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setUpdatedTime((prev) => ({
       ...prev,
-      [name]: value === "" ? 0 : Math.max(1, parseInt(value, 10)), // Foydalanuvchi kiritgan qiymatni daqiqada saqlaymiz
+      [name]: value === "" ? 0 : Math.max(1, parseInt(value, 10)),
     }));
   }
 
-  // Save tugmasi bosilganda - soniyaga o'giramiz va saqlaymiz
   function handleSave() {
     const newChangeTime = {
       pomodoro: updatedTime.pomodoro * 60,

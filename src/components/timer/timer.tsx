@@ -24,41 +24,38 @@ const Timer = ({
   const [mainCount, setMainCount] = useState<number>(changeTime["pomodoro"]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [volumeModal, setVolumeModal] = useState(false);
-  // --------------------------------------------------------     for sound
-
-  // 🔊 Audio obyektlarini `useRef` orqali yaratish
+  // --------------------------------------------------------     for sound states
+  const [volume, setVolume] = useState(0.5); //  Ovoz balandligi
   const soundClick = useRef(new Howl({ src: ["/audio/clickbtn.mp3"] }));
   const soundAlarm = useRef(new Howl({ src: ["/audio/alarm1.mp3"] }));
   const beep = useRef(new Howl({ src: ["/audio/bigclock.mp3"], loop: true }));
 
-  // ⏳ Timerni boshqarish
   // ----------------------------------------------------------- useEffects
-
+  // 1-metadata uchun
   useEffect(() => {
     document.title = `${formatTime(mainCount)} - Time to focus!`;
   }, [mainCount]);
-
+  // 2-interval uchun
   useEffect(() => {
     if (runingTime) {
       intervalRef.current = setInterval(() => {
         setMainCount((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
       }, 1000);
-      beep.current.play(); // ⏩ Beep boshlanadi
+      beep.current.play();
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
-      beep.current.stop(); // ✅ To‘g‘ri ishlaydi
+      beep.current.stop();
     }
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
-      beep.current.stop(); // ✅ Cleanup function ichida ham to‘xtatiladi
+      beep.current.stop();
     };
   }, [runingTime]);
-
-  // 🛑 Taymer tugaganda alarm chalish
+  // 3-sound controll
   useEffect(() => {
     if (mainCount === 0) {
       beep.current.stop(); // ⏹ Beep o‘ynayotgan bo‘lsa to‘xtaydi
@@ -66,13 +63,15 @@ const Timer = ({
       setRuningTime(false);
     }
   }, [mainCount]);
-
+  // 4-maincount  ozgarishi setings orqali
   useEffect(() => {
     setMainCount(changeTime[defaultRuleTime[menuNumber].labelTime]);
   }, [changeTime, menuNumber]);
-
+  // 5-sound range
+  useEffect(() => {
+    beep.current.volume(volume); //  Ovoz range
+  }, [volume]);
   // ------------------------------------------------------------functions
-
   const formatTime = (seconds: number) =>
     `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(
       seconds % 60
@@ -85,10 +84,6 @@ const Timer = ({
     setMainCount(changeTime[defaultRuleTime[nextWayNumber].labelTime]);
     setRuningTime(false);
   }
-  const [volume, setVolume] = useState(0.5); // 🔊 Ovoz balandligi
-  useEffect(() => {
-    beep.current.volume(volume); // 🎚 Ovoz darajasini o‘rnatish
-  }, [volume]);
 
   return (
     <div className="timer container">
